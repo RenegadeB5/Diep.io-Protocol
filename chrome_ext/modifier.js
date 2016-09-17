@@ -18,6 +18,13 @@ injectScript("("+(function() {
 	    if(this === window.WebSocket.prototype.send) return _toString.call(proxiedSend);
 	    return _toString.call(this);
 	};
+	
+	var old = alert;
+	alert = function() {
+		console.log("Traced an alert:")
+		console.log(new Error().stack);
+		old.apply(window, arguments);
+	};
 
 
 	// Upgrades
@@ -287,6 +294,7 @@ injectScript("("+(function() {
 			inst.events.push([1, event.data, event.data.length]);
 		}
 		*/
+		
 		
 		// Detects kills
 		var ar = new Uint8Array(event.data);
